@@ -12,7 +12,7 @@ export const errorHandler = (err, req, res, next) => {
 
     if (err.isAxiosError && err.response) {
         statusCode = err.response.status;
-        message = err.response.data.messgae || err.response.data.error || "External API Error";
+        message = err.response.data.message || err.response.data.error || "External API Error";
     }
 
     if (err.name === "CastError") {
