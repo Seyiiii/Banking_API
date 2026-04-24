@@ -11,6 +11,7 @@ export const errorHandler = (err, req, res, next) => {
     let message = err.message || "Internal Server Error";
 
     if (err.isAxiosError && err.response) {
+        console.error("External API Response Data:", err.response.data);
         statusCode = err.response.status;
         message = err.response.data.message || err.response.data.error || "External API Error";
     }

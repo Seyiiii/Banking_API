@@ -7,7 +7,8 @@ dotenv.config();
 const nibssClient = axios.create({
     baseURL: 'https://nibssbyphoenix.onrender.com',
     headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        // "Authorization": `Bearer ${nibssToken}`
     }
 });
 
@@ -22,7 +23,11 @@ export const loginFintech = async () => {
 
         const response = await axios.post('https://nibssbyphoenix.onrender.com/api/auth/token', credentials);
 
-        nibssToken = response.data.token || response.data.data.token;
+        nibssToken = response.data.token || response.data.data?.token;
+
+        nibssClient.defaults.headers.common['Authorization'] = `Bearer ${nibssToken}`;
+
+        console.log('NIBSS login successful')
         return nibssToken;
     } catch (error) {
         console.error('NIBSS Authentication failed:', error.response?.data || error.message);
@@ -47,7 +52,9 @@ nibssClient.interceptors.response.use((response) => {
 
     if (error.response && error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
+
         await loginFintech();
+
         originalRequest.headers.Authorization = `Bearer ${nibssToken}`;
         return nibssClient(originalRequest);
     }
