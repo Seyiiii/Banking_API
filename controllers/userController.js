@@ -11,9 +11,9 @@ const generateToken = (id) => {
 };
 
 export const registerUser = asyncHandler(async (req, res) => {
-    const { name, email, password, bvn, nin, DOB } = req.body;
+    const { name, email, password, bvn, nin, dob } = req.body;
 
-    if (!name || !email || !password || !DOB) {
+    if (!name || !email || !password || !dob) {
         res.status(400);
         throw new Error('Please provide name, email, password and DOB');
     }
@@ -36,25 +36,24 @@ export const registerUser = asyncHandler(async (req, res) => {
         await nibssClient.post('/api/validateNin', { nin });
     }
 
-    const kycType = bvn ? 'BVN' : 'NIN';
+    const kycType = bvn ? 'BVN' : 'nin';
     const kycID = bvn || nin;
 
-    console.log(kycType, kycID, DOB)
+    console.log(kycType, kycID, dob)
 
     // ✅ Call external API BEFORE saving user
     const accountResponse = await nibssClient.post('/api/account/create', {
-          data: {
-            // name,
-            // email,
-            kycType: "NIN",
-            kycID: "12365478911",   // ← double-check the exact field name NIBSS expects
-            DOB: "2005-07-25"
-        }
+        // name,
+        // email,
+        kycType,
+        kycID,
+        dob
     });
 
-    const generatedAccountNumber =
-        accountResponse.data.accountNumber ||
-        accountResponse.data.data?.accountNumber;
+    console.log('NIBSS account/create full response:', JSON.stringify(accountResponse.data, null, 2));
+
+
+    const generatedAccountNumber = accountResponse.data?.account?.accountNumber;
 
     if (!generatedAccountNumber) {
         res.status(502);
