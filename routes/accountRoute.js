@@ -1,12 +1,13 @@
 import express from 'express';
-import { getAllAccounts, getAccountBalance } from '../controllers/accountController.js';
+import { getAllAccounts, getAccountBalance, accountEnquiry} from '../controllers/accountController.js';
 import { protect } from '../middlewares/authMiddleware.js';
 
 
 const router = express.Router();
 
 router.get('/all', getAllAccounts);
-router.get('balance', protect, getAccountBalance);
+router.get('/balance/:accountNumber', protect, getAccountBalance);
+router.get('/name-enquiry/:accountNumber',protect, accountEnquiry);
 
 
 export default router; 
