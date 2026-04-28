@@ -1,47 +1,43 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
+import { type } from "node:os";
 
 const transactionSchema = new mongoose.Schema({
-    transactionReference: {
-        type: String,
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
-        unique: true
+        ref: 'User'   
     },
-    senderAccount: {
+    type: {
         type: String,
-        required: true
-    },
-    receiverAccount: {
-        type: String,
+        enum: ['debit', 'credit'],
         required: true
     },
     amount: {
         type: Number,
         required: true
+    
     },
-    senderBalanceBefore: {
-        type: Number,
+    from: {
+        type: String,
+        required: true
+        },
+    to: {
+        type: String,
         required: true
     },
-    senderBalanceAfter: {
-        type: Number,
-        required: true
-    },
-    receiverBalanceBefore: {
-        type: Number,
-        default: null
-    },
-    receiverBalanceAfter: {
-        type: Number,
+    reference: {
+        type: String,
         default: null
     },
     status: {
         type: String,
-        required: true,
-        enum: ['PENDING', 'SUCCESS', 'FAILED'],
-        default: 'PENDING'
-    }
+        default: 'success'
+    },
+    description: {
+        type: String
+    },
 }, {
     timestamps: true
-})
+});
 
-export default mongoose.model('Transaction', transactionSchema)
+export default mongoose.model('Transaction', transactionSchema);

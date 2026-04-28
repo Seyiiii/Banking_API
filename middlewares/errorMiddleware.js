@@ -30,6 +30,6 @@ export const errorHandler = (err, req, res, next) => {
         statusCode = 400;
         message = "Duplicate field value entered.";
     }
-
+    
     res.status(statusCode).json({ error: message });
 };

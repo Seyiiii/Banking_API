@@ -37,7 +37,7 @@ export const registerUser = asyncHandler(async (req, res) => {
         await nibssClient.post('/api/validateNin', { nin });
     }
 
-    const kycType = bvn ? 'BVN' : 'nin';
+    const kycType = bvn ? 'bvn' : 'nin';
     const kycID = bvn || nin;
 
     console.log(kycType, kycID, dob)

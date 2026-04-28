@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import connectDB from './db.js';
 import userRoutes from './routes/userRoute.js';
 import accountRoutes from './routes/accountRoute.js';
+import transferRoutes from './routes/transferRoutes.js';
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js';
 
 dotenv.config();
@@ -14,7 +15,7 @@ app.use(express.json());
 
 app.use('/api/users', userRoutes);
 app.use('/api/accounts', accountRoutes);
-
+app.use('/api/transfer', transferRoutes);
 
 
 

@@ -55,7 +55,7 @@ export const accountEnquiry = asyncHandler(async (req, res) => {
             const localAccount = await Account.findOne({ accountNumber }).populate('user', 'name');
 
             if (localAccount) {
-                return res.staus(200).json({
+                return res.status(200).json({
                     accountNumber: localAccount.accountNumber,
                     accountName: localAccount.user.name,
                     bankName: "OLU Bank"
