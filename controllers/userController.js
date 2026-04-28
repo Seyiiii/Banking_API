@@ -2,7 +2,6 @@ import User from "../models/userModel.js";
 import Account from "../models/accountModel.js";
 import asyncHandler from "../middlewares/asyncHandler.js"
 import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
 import nibssClient from "../services/nibssService.js"
 
 const generateToken = (id) => {
@@ -29,6 +28,8 @@ export const registerUser = asyncHandler(async (req, res) => {
         res.status(400);
         throw new Error('User already exists');
     }
+
+    
 
     // Validate KYC first
     if (bvn) {

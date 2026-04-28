@@ -9,7 +9,7 @@ export const getAllAccounts = asyncHandler(async (req, res) => {
 
     const formattedAccounts = accounts.map(account => ({
         userId: account.user._id,
-        accountNmae: account.user.name,
+        accountName: account.user.name,
         accountNumber: account.accountNumber,
         balance: account.balance
     }));
@@ -25,6 +25,25 @@ export const getAccountBalance = asyncHandler(async (req, res) => {
     if (!account) {
         res.status(404);
         throw new Error('Account not found.');
+    }
+
+    if (account.user._id.toString() !== req.user._id.toString()) {
+        res.status(403);
+        throw new Error('You are not authorized to view this account');
+    }
+
+    res.status(200).json({
+        accountNumber: account.accountNumber,
+        balance: account.balance
+    });
+});
+
+export const getMyAccount = asyncHandler(async (req, res) => {
+    const account = await Account.findOne({ user: req.user._id });
+
+    if (!account) {
+        res.status(404);
+        throw new Error('Account not Found');
     }
 
     res.status(200).json({
